@@ -9,7 +9,7 @@ class Car{
         this.acceleration=0.2;
         this.maxSpeed=maxSpeed;
         this.friction=0.05;
-        this.angle=0;
+   
         this.angle = angle;
         this.damaged=false;
 
