@@ -17,34 +17,12 @@
             <input
               type="file"
               id="fileInput"
-              accept=".world"body {
-                background-color: black;
-                text-align: center;
-            }
-            
-            h1 {
-                color: white;
-                font-family: Arial;
-                 
-            }
-            
-            #myCanvas {
-                background-color: #2a5;
-            }
-            
-            button {
-                background-color: white;
-                font-size: 20px;
-                padding: 5px 7px 7px 5px;
-                border: none;
-                border-radius: 5px;
-                text-shadow: 1px 1px black;
-                cursor:  pointer;
-            }
+              accept=".world"
               onchange="load(event)"
               />
 
         </label>
+        <button onclick="openOsmPanel()">🌏🌏</button>
         &nbsp;
         <button id="graphBtn" onclick="setMode('graph')">🌏</button>
         <button id="stopBtn" onclick="setMode('stop')">🤬</button>
@@ -53,7 +31,13 @@
 
 
 
-
+        <div id="osmPanel" style="display: none;">
+            <textarea id="osmDataContainer" rows="10" cols="50"
+              placeholder="Paste OSM data here"></textarea>
+        <div>
+            <button onclick="parseOsmData()">✔</button>
+            <button onclick="closeOsmPanel()">❌</button>
+        </div>
     </div>
     <script src="js/world.js"></script>
 
@@ -70,6 +54,7 @@
     <script src="js/items/tree.js"></script>
     <script src="js/items/building.js"></script>
     <script src="js/math/graph.js"></script>
+    <script src="js/math/osm.js"></script>
     <script src="js/math/utils.js"></script>
 
     <script src="js/primitives/point.js"></script>
@@ -182,6 +167,25 @@
                 tool.button.filter = "grayscale(100%)";
                 tool.editor.disable();
             }
+        }
+
+        function openOsmPanel() {
+            osmPanel.style.display = "block";
+        }
+
+        function closeOsmPanel() {
+            osmPanel.style.display = "none";
+        }
+
+        function parseOsmData() {
+            if (osmDataContainer.value == "") {
+                alert("Paste data first");
+                return;
+            }
+            const res = Osm.parseRoads(JSON.parse(osmDataContainer.value));
+            graph.points = res.points;
+            graph.segments = res.segments;
+            closeOsmPanel();
         }
 
     </script>
